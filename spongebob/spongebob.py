@@ -41,7 +41,11 @@ def spongebobify(text=None, file_to_convert=None):
             sys.exit(0)
 
         if file_to_convert in os.listdir():
-            raw_text = docx2txt.process(file_to_convert)
+            if '.docx' in file_to_convert:
+                raw_text = docx2txt.process(file_to_convert)
+            elif '.txt' in file_to_convert:
+                with open(file_to_convert, 'r') as file:
+                    raw_text = file.read()
         else:
             print("FIle DoeS NOt EXisT")
             sys.exit(0)

@@ -10,6 +10,7 @@ from docx.shared import Inches
 
 import argparse
 
+import os.path
 
 print(
 """
@@ -76,12 +77,14 @@ def spongebobify(text=None, file_to_convert=None):
     out_text = '\n'.join(newlines)
 
     # 5) Write to docx
+    my_path = os.path.abspath(os.path.dirname(__file__))
+    pic_path = os.path.join(my_path, 'spongebob.jpg')
     text_segs = out_text.split("|SPONGEPIC|")
 
     document = Document()
 
     document.add_paragraph(text_segs[0])
-    document.add_picture('spongebob.jpg', width=Inches(6))
+    document.add_picture(pic_path, width=Inches(6))
     document.add_paragraph(text_segs[1])
 
     document.save(sponge_file)

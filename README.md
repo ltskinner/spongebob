@@ -3,14 +3,16 @@ DeSCriPTiOn (OpTiONaL)
 
 YOu muST PaY rOyAlTiEs On CoPYriGhTEd MatERiAL
 
+## Install:
 
+    pip install spongebob
 
 ### Inline:
 
     from spongebob import spongebobify
   
     normal_text = "A completely normal looking text sample that conveys no sense of pettyness or snarkiness"
-    spongebobbed_text = spongebobify(text=normal_text)
+    sponge_text = spongebobify(text=normal_text)
     
 ### External File:
   

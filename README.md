@@ -11,7 +11,7 @@ DeSCriPTiOn (OpTiONaL)
 
     from spongebob import spongebobify
   
-    normal_text = "A completely normal looking text sample that conveys no sense of pettyness or snarkiness"
+    normal_text = "A completely normal looking text sample"
     sponge_text = spongebobify(text=normal_text)
     
 ### External File:

@@ -11,7 +11,7 @@ DeSCriPTiOn (OpTiONaL)
 
     from spongebob import spongebobify
   
-    normal_text = "A completely normal looking text sample that conveys no sense of pettyness or snarkiness"
+    normal_text = "A completely normal looking text sample"
     sponge_text = spongebobify(text=normal_text)
     
 ### External File:
@@ -21,6 +21,3 @@ DeSCriPTiOn (OpTiONaL)
     file_name = "apathetic_text.docx"
     file_name = "apathetic_text.txt
     sponge_text = spongebobify(file_to_convert=file_name)
-    
-    
-Check the CWD for a suprise ;)

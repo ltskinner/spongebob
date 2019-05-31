@@ -4,6 +4,9 @@
 # Docx files
 *.docx
 
+# .vscode
+/.vscode
+
 # Setuptools distribution folder.
 /dist/
 

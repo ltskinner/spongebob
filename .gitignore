@@ -1,6 +1,9 @@
 # Compiled python modules.
 *.pyc
 
+# Docx files
+*.docx
+
 # Setuptools distribution folder.
 /dist/
 

@@ -12,7 +12,9 @@ import argparse
 
 import os.path
 
-f = open("banner.txt", 'r', encoding='utf-8')
+banner_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 
+                           'banner.txt')
+f = open(banner_path, 'r', encoding='utf-8')
 print(f.read())
 f.close()
 

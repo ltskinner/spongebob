@@ -1,3 +1,3 @@
 from spongebob import spongebobify
 
-_ = spongebobify(text='lord help me for i have sinned')
+_ = spongebobify(text='youre hacking into the pentagon, brother??')

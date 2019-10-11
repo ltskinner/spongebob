@@ -91,28 +91,35 @@ def create_and_write_meme(partitioned_text):
 
     # height, width, channels
     img = cv2.imread(pic_path)
-    height, width, _ = img.shape
+    img_height, img_width, _ = img.shape
 
     FONT = cv2.FONT_HERSHEY_SIMPLEX
-    FONT_SCALE = 4
-    FONT_THICKNESS = 20
+    FONT_SCALE = 1.5
+    FONT_THICKNESS = 5
     label_color = (255, 255, 255) #255 #(0, 0, 0)
-
 
     top_text, bot_text = partitioned_text.split("|SPONGEPIC|")
 
-    (label_width, label_height), baseline = cv2.getTextSize(top_text,
-                                                            FONT,
-                                                            FONT_SCALE,
-                                                            FONT_THICKNESS)
-    top_center = label_width / 2
-    top_left = int((width/2) - top_center)
-    top_top = int((height * .05) + label_height)  # 5% down
-    print(top_text)
-    print(top_left, top_top)
+    (top_label_width, top_label_height), _ = cv2.getTextSize(top_text,
+                                                             FONT,
+                                                             FONT_SCALE,
+                                                             FONT_THICKNESS)
+    top_center = top_label_width / 2
+    top_left = int((img_width/2) - top_center)
+    top_top = int((img_height * .05) + top_label_height)  # 5% down
+
+    (bot_label_width, bot_label_height), _ = cv2.getTextSize(bot_text,
+                                                             FONT,
+                                                             FONT_SCALE,
+                                                             FONT_THICKNESS)
+    bot_center = bot_label_width / 2
+    bot_left = int((img_width/2) - bot_center)
+    bot_bot = int((img_height * .95) - bot_label_height)  # 5% down
 
     cv2.putText(img, top_text, (top_left, top_top), FONT, FONT_SCALE, label_color, thickness=FONT_THICKNESS)
-    cv2.imwrite(os.path.join(my_path, 'meme.jpg'), img)
+    cv2.putText(img, bot_text, (bot_left, bot_bot), FONT, FONT_SCALE, label_color, thickness=FONT_THICKNESS)
+
+    cv2.imwrite(os.path.join(os.getcwd(), 'meme.jpg'), img)
 
 
 def name_docx_file(file_to_convert):

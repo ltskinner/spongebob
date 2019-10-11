@@ -19,7 +19,7 @@ print(f.read())
 f.close()
 
 
-def spongebobify(text=None, file_to_convert=None):
+def spongebobify(text=None, file_to_convert=None, save_picture=True):
     if text is None and file_to_convert is None:
         raw_text = input("EntEr The TexT YOu WaNT tO cONvERt:\n")
         file_to_convert = "spongebob"
@@ -44,10 +44,11 @@ def spongebobify(text=None, file_to_convert=None):
         file_to_convert = "spongebob"
 
     sponge_text = to_spongebob_text(raw_text)
-    docx_text = insert_picture_to_docx(sponge_text)
 
     sponge_file = name_docx_file(file_to_convert)
+    docx_text = insert_picture_to_docx(sponge_text)
     write_to_docx(docx_text, sponge_file)
+
     display_text_to_terminal(sponge_text, sponge_file)
 
     return sponge_text

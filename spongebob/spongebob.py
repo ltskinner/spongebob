@@ -94,10 +94,10 @@ def create_and_write_meme(partitioned_text):
     height, width, _ = img.shape
 
     FONT = cv2.FONT_HERSHEY_SIMPLEX
-    FONT_SCALE = 40
-    FONT_THICKNESS = 200
-    #bg_color = (255, 255, 255)
-    label_color = 255 #(0, 0, 0)
+    FONT_SCALE = 4
+    FONT_THICKNESS = 20
+    label_color = (255, 255, 255) #255 #(0, 0, 0)
+
 
     top_text, bot_text = partitioned_text.split("|SPONGEPIC|")
 
@@ -106,12 +106,12 @@ def create_and_write_meme(partitioned_text):
                                                             FONT_SCALE,
                                                             FONT_THICKNESS)
     top_center = label_width / 2
-    top_left = int(width - top_center)
+    top_left = int((width/2) - top_center)
     top_top = int((height * .05) + label_height)  # 5% down
     print(top_text)
     print(top_left, top_top)
 
-    cv2.putText(img, top_text, (top_left, top_top), FONT, FONT_SCALE, label_color)
+    cv2.putText(img, top_text, (top_left, top_top), FONT, FONT_SCALE, label_color, thickness=FONT_THICKNESS)
     cv2.imwrite(os.path.join(my_path, 'meme.jpg'), img)
 
 

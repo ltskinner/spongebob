@@ -1,17 +1,17 @@
 
-import sys
 import os
-
-import docx2txt
+import sys
 import random
 
+import docx2txt
 from docx import Document
 from docx.shared import Inches
+
+from cv2 import cv2
 
 import argparse
 
 import os.path
-
 banner_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 
                            'banner.txt')
 f = open(banner_path, 'r', encoding='utf-8')
@@ -19,7 +19,10 @@ print(f.read())
 f.close()
 
 
-def spongebobify(text=None, file_to_convert=None, save_picture=True):
+def spongebobify(text=None,
+                 file_to_convert=None,
+                 save_picture=True,
+                 save_docx=False) -> str:
     if text is None and file_to_convert is None:
         raw_text = input("EntEr The TexT YOu WaNT tO cONvERt:\n")
         file_to_convert = "spongebob"
@@ -44,12 +47,16 @@ def spongebobify(text=None, file_to_convert=None, save_picture=True):
         file_to_convert = "spongebob"
 
     sponge_text = to_spongebob_text(raw_text)
+    partitioned_text = split_text(sponge_text)
 
-    sponge_file = name_docx_file(file_to_convert)
-    docx_text = insert_picture_to_docx(sponge_text)
-    write_to_docx(docx_text, sponge_file)
+    if save_picture:
+        create_and_write_meme(partitioned_text)
 
-    display_text_to_terminal(sponge_text, sponge_file)
+    if save_docx:
+        sponge_file = name_docx_file(file_to_convert)
+        write_to_docx(partitioned_text, sponge_file)
+
+    display_text_to_terminal(sponge_text)
 
     return sponge_text
 
@@ -78,6 +85,36 @@ def to_spongebob_text(raw_text):
     return sponge_text
 
 
+def create_and_write_meme(partitioned_text):
+    my_path = os.path.abspath(os.path.dirname(__file__))
+    pic_path = os.path.join(my_path, 'spongebob.jpg')
+
+    # height, width, channels
+    img = cv2.imread(pic_path)
+    height, width, _ = img.shape
+
+    FONT = cv2.FONT_HERSHEY_SIMPLEX
+    FONT_SCALE = 40
+    FONT_THICKNESS = 200
+    #bg_color = (255, 255, 255)
+    label_color = 255 #(0, 0, 0)
+
+    top_text, bot_text = partitioned_text.split("|SPONGEPIC|")
+
+    (label_width, label_height), baseline = cv2.getTextSize(top_text,
+                                                            FONT,
+                                                            FONT_SCALE,
+                                                            FONT_THICKNESS)
+    top_center = label_width / 2
+    top_left = int(width - top_center)
+    top_top = int((height * .05) + label_height)  # 5% down
+    print(top_text)
+    print(top_left, top_top)
+
+    cv2.putText(img, top_text, (top_left, top_top), FONT, FONT_SCALE, label_color)
+    cv2.imwrite(os.path.join(my_path, 'meme.jpg'), img)
+
+
 def name_docx_file(file_to_convert):
     file_to_convert = file_to_convert.replace('.', "_spongebob.")
     return str(to_spongebob_text(file_to_convert.split('.')[0]) + ".docx")
@@ -96,7 +133,7 @@ def write_to_docx(docx_text, sponge_file):
     document.save(sponge_file)
 
 
-def insert_picture_to_docx(sponge_text):
+def split_text(sponge_text):
     newlines = sponge_text.split('\n')
     if len(newlines) > 2:
         newlines.insert(int(len(newlines)/2), "|SPONGEPIC|")
@@ -111,10 +148,10 @@ def insert_picture_to_docx(sponge_text):
     return '\n'.join(newlines)
 
 
-def display_text_to_terminal(sponge_text, sponge_file):
+def display_text_to_terminal(sponge_text):  #, sponge_file):
     width = os.get_terminal_size().columns - 3
-    print("+" + ''.join(['-' for _ in range(width)]) + "+")
-    print("|" + sponge_file.center(width) + "|")
+    #print("+" + ''.join(['-' for _ in range(width)]) + "+")
+    #print("|" + sponge_file.center(width) + "|")
     print("+" + ''.join(['-' for _ in range(width)]) + "+")
     print(sponge_text)
     print("+" + ''.join(['-' for _ in range(width)]) + "+")

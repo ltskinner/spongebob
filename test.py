@@ -1,3 +1,3 @@
 from spongebob import spongebobify
 
-_ = spongebobify(text='what is a good test string brotherr')
+_ = spongebobify(text='how many games are we playing much longer text to test how this thing hangles lots of crap')

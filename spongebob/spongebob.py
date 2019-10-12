@@ -56,7 +56,7 @@ def spongebobify(text=None,
         sponge_file = name_docx_file(file_to_convert)
         write_to_docx(partitioned_text, sponge_file)
 
-    display_text_to_terminal(sponge_text)
+    print(sponge_text)
 
     return sponge_text
 
@@ -93,34 +93,61 @@ def create_and_write_meme(partitioned_text):
     img = cv2.imread(pic_path)
     img_height, img_width, _ = img.shape
 
-    FONT = cv2.FONT_HERSHEY_SIMPLEX
-    FONT_SCALE = 1.5
-    FONT_THICKNESS = 5
-    label_color = (255, 255, 255) #255 #(0, 0, 0)
+    print('[!] Use num characters to determine font')
+    # def find_font_size()
 
     top_text, bot_text = partitioned_text.split("|SPONGEPIC|")
 
+    # TODO: swap font type -> IMPACT, use Dank Learnings meme writer maybe?
+    font = find_font_params(top_text, bot_text)
+    label_color = (255, 255, 255) #255 #(0, 0, 0)
+    # TODO: add black outline to text
+
     (top_label_width, top_label_height), _ = cv2.getTextSize(top_text,
-                                                             FONT,
-                                                             FONT_SCALE,
-                                                             FONT_THICKNESS)
+                                                             font['font'],
+                                                             font['scale'],
+                                                             font['thickness'])
     top_center = top_label_width / 2
     top_left = int((img_width/2) - top_center)
     top_top = int((img_height * .05) + top_label_height)  # 5% down
 
     (bot_label_width, bot_label_height), _ = cv2.getTextSize(bot_text,
-                                                             FONT,
-                                                             FONT_SCALE,
-                                                             FONT_THICKNESS)
+                                                             font['font'],
+                                                             font['scale'],
+                                                             font['thickness'])
     bot_center = bot_label_width / 2
     bot_left = int((img_width/2) - bot_center)
     bot_bot = int((img_height * .95) - bot_label_height)  # 5% down
 
-    cv2.putText(img, top_text, (top_left, top_top), FONT, FONT_SCALE, label_color, thickness=FONT_THICKNESS)
-    cv2.putText(img, bot_text, (bot_left, bot_bot), FONT, FONT_SCALE, label_color, thickness=FONT_THICKNESS)
+    label_color = (255, 255, 255) #255 #(0, 0, 0)
+    cv2.putText(img, top_text, (top_left, top_top), font['font'], font['scale'], label_color, thickness=font['thickness']S)
+    cv2.putText(img, bot_text, (bot_left, bot_bot), font['font'], font['scale'], label_color, thickness=font['thickness'])
 
     cv2.imwrite(os.path.join(os.getcwd(), 'meme.jpg'), img)
 
+
+def find_font_params(top_text, bot_text):
+    FONT = cv2.FONT_HERSHEY_COMPLEX
+    FONT_SCALE = 1.5
+    FONT_THICKNESS = 2
+
+    (top_label_width, top_label_height), _ = cv2.getTextSize(top_text,
+                                                             FONT,
+                                                             FONT_SCALE,
+                                                             FONT_THICKNESS)
+    (bot_label_width, bot_label_height), _ = cv2.getTextSize(bot_text,
+                                                             FONT,
+                                                             FONT_SCALE,
+                                                             FONT_THICKNESS)
+
+    max_width = max([top_label_width, bot_label_width])
+
+    font = {
+        'font': FONT,
+        'scale': FONT_SCALE,
+        'thickness': FONT_THICKNESS
+    }
+    return font
 
 def name_docx_file(file_to_convert):
     file_to_convert = file_to_convert.replace('.', "_spongebob.")
@@ -153,15 +180,6 @@ def split_text(sponge_text):
         newlines[0] = ' '.join(newwords)
 
     return '\n'.join(newlines)
-
-
-def display_text_to_terminal(sponge_text):  #, sponge_file):
-    width = os.get_terminal_size().columns - 3
-    #print("+" + ''.join(['-' for _ in range(width)]) + "+")
-    #print("|" + sponge_file.center(width) + "|")
-    print("+" + ''.join(['-' for _ in range(width)]) + "+")
-    print(sponge_text)
-    print("+" + ''.join(['-' for _ in range(width)]) + "+")
 
 
 if __name__ == "__main__":
